@@ -33,7 +33,7 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)gotoConfirmPage:(id)sender {
-    if (self.orderDetailObject.product && self.orderDetailObject.addons) {
+    if ([self.orderDetailObject isValidOrder]) {
         [self performSegueWithIdentifier:@"gotoConfirm" sender:self];
     }
     else{
@@ -76,14 +76,17 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (!self.orderDetailObject.addons) {
+        self.orderDetailObject.addons = [[NSMutableSet alloc] init];
+    }
     if(cell.accessoryType==UITableViewCellAccessoryNone)
     {
         cell.accessoryType=UITableViewCellAccessoryCheckmark;
-        self.orderDetailObject.addons = [self.addonsArray objectAtIndex:indexPath.row];
+        [self.orderDetailObject.addons addObject:[self.addonsArray objectAtIndex:indexPath.row]];
     }
     else{
         cell.accessoryType=UITableViewCellAccessoryNone;
-        self.orderDetailObject.addons = nil;
+        [self.orderDetailObject.addons  removeObject:[self.addonsArray objectAtIndex:indexPath.row]];
     }
 }
 

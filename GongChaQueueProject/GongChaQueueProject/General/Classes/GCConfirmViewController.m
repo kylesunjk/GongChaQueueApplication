@@ -25,9 +25,9 @@
 }
 - (IBAction)submitOrder:(id)sender {
     NSString *productID = self.orderDetailObject.product.pid;
-    NSString *addonsID = self.orderDetailObject.addons.aid;
+//    NSString *addonsID = self.orderDetailObject.addons.aid;
                         
-    [GCApiManager submitOrderWithProductID:productID withAddons:addonsID withViewController:self completion:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [GCApiManager submitOrderWithProductID:productID withAddons:@"1" withViewController:self completion:^(AFHTTPRequestOperation *operation, id responseObject) {
         [SimpleAlertView show:@"success" withViewController:self];
     }];
 }

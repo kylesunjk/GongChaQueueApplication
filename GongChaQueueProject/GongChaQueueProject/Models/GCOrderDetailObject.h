@@ -7,7 +7,7 @@
 #import "GCProductObject.h"
 #import "GCAddonsObject.h"
 @interface GCOrderDetailObject : JSONModel
-@property (strong , nonatomic) GCAddonsObject *addons;
+@property (strong , nonatomic) NSMutableSet <GCAddonsObject>*addons;
 @property (strong , nonatomic) GCProductObject *product;
 
 -(BOOL)isValidOrder;
