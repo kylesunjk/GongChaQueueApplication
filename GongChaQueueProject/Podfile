@@ -1,0 +1,8 @@
+pod 'JSONModel'
+pod "AFNetworking", "~> 2.0"
+pod 'SVProgressHUD'
+pod 'Bolts'
+pod 'SDWebImage', '~>3.6'
+pod 'SVHTTPRequest'
+pod 'PBJVision'
+pod 'ALAssetsLibrary-CustomPhotoAlbum', '~> 1.2.0'
