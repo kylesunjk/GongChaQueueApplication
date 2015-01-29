@@ -10,7 +10,7 @@
 
 }
 -(BOOL)isValidOrder{
-    if(self.product && self.addons &&self.addons.count>0){
+    if(self.product && self.addons ){
         return YES;
     }
     else{

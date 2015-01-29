@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import "SimpleAlertView.h"
 @interface AppDelegate ()
 
 @end
@@ -17,6 +17,19 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)])
+    {
+        // iOS 8 Notifications
+        // use registerUserNotificationSettings
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }
+    else
+    {
+        // iOS < 8 Notifications
+        // use registerForRemoteNotifications
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];
+    }
     return YES;
 }
 
@@ -42,6 +55,30 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
+}
+
+#pragma mark - Register Push Notification
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+    NSLog(@"My token is: %@", deviceToken);
+    NSString *dt = [[NSString stringWithFormat:@"%@",deviceToken] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    NSString *dn = [dt stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    //空格用别的代替
+    dt = [dn stringByReplacingOccurrencesOfString:@" " withString:@""];
+    [GCApiManager registerUserNotificationKey:dt withApplicatonType:@"Customer" completion:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+    }];
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+    NSLog(@"Failed to get token, error: %@", error);
+}
+
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"Your order have been confirmed" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alert show];
 }
 
 #pragma mark - Core Data stack

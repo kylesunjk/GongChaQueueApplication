@@ -21,4 +21,7 @@
 
 //post submission data from custer
 + (void)submitOrderWithProductID:(NSString *)productID withAddons:(NSString *)addonsID withViewController:(UIViewController *)viewcontroller completion:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success;
+
+//post submission data from custer
++ (void)registerUserNotificationKey:(NSString *)deviceToken withApplicatonType:(NSString *)typeName completion:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success;
 @end

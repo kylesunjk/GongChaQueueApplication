@@ -111,4 +111,18 @@
         NSLog(@"Error: %@", error);
     }];
 }
+
++ (void)registerUserNotificationKey:(NSString *)deviceToken withApplicatonType:(NSString *)typeName completion:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success{
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:typeName,@"name",
+                                deviceToken,@"deviceId",
+                                nil];
+    [manager POST:[GC_APIDOMAIN stringByAppendingString:@"addCustomer"] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        success(operation , responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
 @end
